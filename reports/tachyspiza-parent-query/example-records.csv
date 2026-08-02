@@ -1,4 +1,4 @@
-inaturalist_observation,gbif_occurrence,gbif_taxon_key,gbif_scientific_name,gbif_order,gbif_issue
-379649975,6441464971,4852732,"Tachyspiza Kaup, 1844",,TAXON_ID_NOT_FOUND
-332975904,5938571149,4852732,"Tachyspiza Kaup, 1844",,TAXON_ID_NOT_FOUND
-239875289,4946532804,4852732,"Tachyspiza Kaup, 1844",,TAXON_ID_NOT_FOUND
+inaturalist_observation,gbif_occurrence,source_taxon_id,source_scientific_name,source_order,gbif_taxon_key,gbif_scientific_name,gbif_order,gbif_issue
+379649975,6441464971,1582863,"Tachyspiza cirrocephala",Accipitriformes,4852732,"Tachyspiza Kaup, 1844",,TAXON_ID_NOT_FOUND
+332975904,5938571149,1583256,"Tachyspiza fasciata",Accipitriformes,4852732,"Tachyspiza Kaup, 1844",,TAXON_ID_NOT_FOUND
+239875289,4946532804,1583020,"Tachyspiza novaehollandiae",Accipitriformes,4852732,"Tachyspiza Kaup, 1844",,TAXON_ID_NOT_FOUND

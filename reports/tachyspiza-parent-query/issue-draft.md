@@ -40,17 +40,33 @@ Observed on 2026-08-03:
 
 ## Minimal examples
 
-- https://www.gbif.org/occurrence/6441464971
-- https://www.gbif.org/occurrence/5938571149
-- https://www.gbif.org/occurrence/4946532804
+The occurrence pages display the publisher's `taxonID`. For this dataset,
+those are iNaturalist species identifiers. They are different from GBIF's
+interpreted `taxonKey`, which is the identifier used by the occurrence API's
+`taxon_key` filter.
 
-Each example:
+| GBIF occurrence | Source `taxonID` | Source scientific name | Source order | GBIF `taxonKey` | GBIF interpreted name | GBIF order |
+|---|---:|---|---|---:|---|---|
+| [6441464971](https://www.gbif.org/occurrence/6441464971) | `1582863` | `Tachyspiza cirrocephala` | `Accipitriformes` | `4852732` | `Tachyspiza` | absent |
+| [5938571149](https://www.gbif.org/occurrence/5938571149) | `1583256` | `Tachyspiza fasciata` | `Accipitriformes` | `4852732` | `Tachyspiza` | absent |
+| [4946532804](https://www.gbif.org/occurrence/4946532804) | `1583020` | `Tachyspiza novaehollandiae` | `Accipitriformes` | `4852732` | `Tachyspiza` | absent |
 
-- belongs to the selected iNaturalist dataset;
-- has GBIF taxon key `4852732`;
-- has no `order` value;
-- carries `TAXON_ID_NOT_FOUND`;
-- remains directly accessible through GBIF.
+This is how the examples relate to the two queries:
+
+- Query A uses GBIF taxon key `7191147` for `Accipitriformes`.
+- The verbatim source records state `order=Accipitriformes`.
+- GBIF interprets all three records as taxon key `4852732`, the doubtful genus
+  `Tachyspiza`; this is Query B.
+- GBIF taxon key `4852732` has `Aves` as its direct parent and has no
+  `Accipitriformes` order in its hierarchy.
+- Parent filtering therefore does not treat these records as descendants of
+  Query A's taxon key.
+
+The source and interpreted representations can be compared directly through
+the occurrence API:
+
+- https://api.gbif.org/v1/occurrence/6441464971
+- https://api.gbif.org/v1/occurrence/6441464971/verbatim
 
 ## Expected and observed behaviour
 

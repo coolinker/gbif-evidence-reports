@@ -35,6 +35,23 @@ observations, or 99.83%.
 No duplicate GBIF occurrence keys were found between the parent and detached
 genus query results.
 
+## Identifier namespaces
+
+The occurrence page's `taxonID` and the occurrence API's `taxon_key` filter do
+not use the same identifier namespace in this dataset.
+
+- `taxonID` is supplied by the publisher. Here it is an iNaturalist species
+  identifier, such as `1582863` for `Tachyspiza cirrocephala`.
+- `taxonKey` is assigned by GBIF during interpretation. All three examples
+  have GBIF `taxonKey=4852732`, representing the doubtful genus `Tachyspiza`.
+- Query A uses GBIF key `7191147`, representing the order
+  `Accipitriformes`.
+
+The source records contain `order=Accipitriformes`, but the interpreted GBIF
+records have no order. GBIF key `4852732` therefore is not a descendant of key
+`7191147`, which explains why the records are returned by Query B but not
+Query A.
+
 ## Negative benchmark
 
 Six preselected taxonomy-boundary candidates and three controls were evaluated

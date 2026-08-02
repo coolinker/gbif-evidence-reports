@@ -17,6 +17,9 @@ DATASET_KEY = "50c9509d-22c7-4a22-a47d-8c48425ef4a7"
 PARENT_TAXON_KEY = 7191147
 DETACHED_TAXON_KEY = 4852732
 EXAMPLE_KEYS = (6441464971, 5938571149, 4946532804)
+SCIENTIFIC_NAME_TERM = "http://rs.tdwg.org/dwc/terms/scientificName"
+ORDER_TERM = "http://rs.tdwg.org/dwc/terms/order"
+TAXON_ID_TERM = "http://rs.tdwg.org/dwc/terms/taxonID"
 
 
 def get_json(url: str) -> dict[str, Any]:
@@ -49,8 +52,11 @@ def occurrence_query(taxon_key: int) -> tuple[str, dict[str, Any]]:
 
 def check_example(key: int) -> dict[str, Any]:
     record = get_json(f"{API_ROOT}/occurrence/{key}")
+    verbatim = get_json(f"{API_ROOT}/occurrence/{key}/verbatim")
     checks = {
         "dataset_matches": record.get("datasetKey") == DATASET_KEY,
+        "source_order_is_accipitriformes": verbatim.get(ORDER_TERM)
+        == "Accipitriformes",
         "taxon_matches": record.get("taxonKey") == DETACHED_TAXON_KEY,
         "order_is_missing": not record.get("order"),
         "taxon_id_not_found": "TAXON_ID_NOT_FOUND" in record.get("issues", []),
@@ -58,9 +64,17 @@ def check_example(key: int) -> dict[str, Any]:
     return {
         "key": key,
         "occurrenceID": record.get("occurrenceID"),
-        "scientificName": record.get("scientificName"),
-        "order": record.get("order"),
-        "issues": record.get("issues", []),
+        "source": {
+            "taxonID": verbatim.get(TAXON_ID_TERM),
+            "scientificName": verbatim.get(SCIENTIFIC_NAME_TERM),
+            "order": verbatim.get(ORDER_TERM),
+        },
+        "gbif_interpretation": {
+            "taxonKey": record.get("taxonKey"),
+            "scientificName": record.get("scientificName"),
+            "order": record.get("order"),
+            "issues": record.get("issues", []),
+        },
         "checks": checks,
     }
 
