@@ -64,5 +64,6 @@ Is this exclusion intended behaviour? If so, what API method should users use
 to discover and retrieve records assigned to taxa that are detached from their
 expected parent hierarchy?
 
-Detailed evidence and a standard-library reproduction script are available in
-this repository.
+Detailed evidence and a standard-library reproduction script:
+
+https://github.com/coolinker/gbif-evidence-reports/tree/main/reports/tachyspiza-parent-query
