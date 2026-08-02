@@ -7,6 +7,12 @@ returns 36,493 Australian records for 2020-2025. A separate query for
 `Tachyspiza` returns 4,144 records from the same dataset, country, and years.
 The two result sets contain no duplicate GBIF occurrence keys.
 
+An order is broader than a genus. If `Tachyspiza` were retained beneath
+`Accipitriformes` in the hierarchy used by the occurrence filter, Query B's
+records would normally be a subset of Query A's records. The issue is not
+whether Query A or Query B has the larger count; it is that the 4,144 Query B
+records have zero overlap with Query A.
+
 The source observations identify `Tachyspiza` species within
 `Accipitriformes`. In GBIF, the affected occurrences are interpreted only as
 the doubtful genus `Tachyspiza` (taxon key `4852732`), have no `order` value,

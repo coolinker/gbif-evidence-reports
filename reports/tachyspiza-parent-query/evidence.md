@@ -35,6 +35,11 @@ observations, or 99.83%.
 No duplicate GBIF occurrence keys were found between the parent and detached
 genus query results.
 
+Normally, a query for an order returns records assigned to its descendant
+families, genera, and species. The expected set relationship is therefore
+`Tachyspiza query results ⊆ Accipitriformes query results`, not that the two
+queries should have equal counts. In this case their intersection was empty.
+
 ## Identifier namespaces
 
 The occurrence page's `taxonID` and the occurrence API's `taxon_key` filter do
