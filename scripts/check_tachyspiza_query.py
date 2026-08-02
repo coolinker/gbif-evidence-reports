@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 import time
@@ -38,16 +39,44 @@ def get_json(url: str) -> dict[str, Any]:
     raise RuntimeError("Unreachable retry state")
 
 
-def occurrence_query(taxon_key: int) -> tuple[str, dict[str, Any]]:
+def occurrence_query(
+    taxon_key: int, *, limit: int = 0, offset: int = 0
+) -> tuple[str, dict[str, Any]]:
     parameters = {
         "country": "AU",
         "taxon_key": taxon_key,
         "year": "2020,2025",
         "dataset_key": DATASET_KEY,
-        "limit": 0,
+        "limit": limit,
     }
+    if offset:
+        parameters["offset"] = offset
     url = f"{API_ROOT}/occurrence/search?{urlencode(parameters)}"
     return url, get_json(url)
+
+
+def occurrence_keys(taxon_key: int) -> tuple[set[int], int]:
+    keys: set[int] = set()
+    offset = 0
+    reported_count = 0
+
+    while True:
+        _, page = occurrence_query(taxon_key, limit=300, offset=offset)
+        reported_count = page["count"]
+        page_keys = [record["key"] for record in page.get("results", [])]
+        keys.update(page_keys)
+
+        if page.get("endOfRecords") or not page_keys:
+            break
+        offset += len(page_keys)
+        if offset % 7500 == 0:
+            print(
+                f"Retrieved {offset:,}/{reported_count:,} records "
+                f"for taxon key {taxon_key}",
+                file=sys.stderr,
+            )
+
+    return keys, reported_count
 
 
 def check_example(key: int) -> dict[str, Any]:
@@ -79,7 +108,20 @@ def check_example(key: int) -> dict[str, Any]:
     }
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Reproduce the GBIF Tachyspiza parent-query evidence."
+    )
+    parser.add_argument(
+        "--full-overlap",
+        action="store_true",
+        help="Retrieve all occurrence keys and calculate the set intersection.",
+    )
+    return parser.parse_args()
+
+
 def main() -> int:
+    args = parse_args()
     parent_url, parent_result = occurrence_query(PARENT_TAXON_KEY)
     detached_url, detached_result = occurrence_query(DETACHED_TAXON_KEY)
     examples = [check_example(key) for key in EXAMPLE_KEYS]
@@ -97,6 +139,30 @@ def main() -> int:
         },
         "examples": examples,
     }
+
+    overlap_is_empty = True
+    retrieval_is_complete = True
+    if args.full_overlap:
+        parent_keys, parent_reported_count = occurrence_keys(PARENT_TAXON_KEY)
+        detached_keys, detached_reported_count = occurrence_keys(
+            DETACHED_TAXON_KEY
+        )
+        overlap = parent_keys & detached_keys
+        retrieval_is_complete = (
+            len(parent_keys) == parent_reported_count
+            and len(detached_keys) == detached_reported_count
+        )
+        overlap_is_empty = not overlap
+        output["full_overlap"] = {
+            "parent_reported_count": parent_reported_count,
+            "parent_unique_keys_retrieved": len(parent_keys),
+            "detached_genus_reported_count": detached_reported_count,
+            "detached_genus_unique_keys_retrieved": len(detached_keys),
+            "overlap_count": len(overlap),
+            "overlap_keys": sorted(overlap),
+            "retrieval_complete": retrieval_is_complete,
+        }
+
     print(json.dumps(output, indent=2, sort_keys=True))
 
     checks = [
@@ -104,8 +170,11 @@ def main() -> int:
         for example in examples
         for value in example["checks"].values()
     ]
-    if not all(checks):
-        print("One or more example records no longer match the report.", file=sys.stderr)
+    if not all(checks) or not overlap_is_empty or not retrieval_is_complete:
+        print(
+            "One or more current results no longer match the report.",
+            file=sys.stderr,
+        )
         return 1
     return 0
 

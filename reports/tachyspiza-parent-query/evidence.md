@@ -35,10 +35,36 @@ observations, or 99.83%.
 No duplicate GBIF occurrence keys were found between the parent and detached
 genus query results.
 
+## Minimal paired-query test
+
+For iNaturalist observation `379649975`, the occurrence search combines its
+`occurrence_id` with each GBIF taxon key:
+
+```text
+occurrence_id=https://www.inaturalist.org/observations/379649975
+taxon_key=4852732  -> count 1, GBIF occurrence 6441464971
+taxon_key=7191147  -> count 0
+```
+
+This proves the individual occurrence is selected by the interpreted
+`Tachyspiza` genus key but not by the expected `Accipitriformes` order key.
+
 Normally, a query for an order returns records assigned to its descendant
 families, genera, and species. The expected set relationship is therefore
 `Tachyspiza query results ⊆ Accipitriformes query results`, not that the two
 queries should have equal counts. In this case their intersection was empty.
+
+The intersection was calculated from the complete sets of GBIF occurrence
+keys, not inferred from the three examples:
+
+```text
+unique Query A keys: 36,493
+unique Query B keys:  4,144
+intersection:             0
+```
+
+Run `python3 scripts/check_tachyspiza_query.py --full-overlap` to repeat this
+full-set comparison against the current API.
 
 ## Identifier namespaces
 

@@ -26,6 +26,12 @@ python3 scripts/check_tachyspiza_query.py
 It retrieves the current counts for the two GBIF occurrence queries and checks
 three public example records.
 
+To retrieve every occurrence key and calculate the exact set intersection:
+
+```bash
+python3 scripts/check_tachyspiza_query.py --full-overlap
+```
+
 ## Reporting principles
 
 - Separate observed API behaviour from taxonomic opinion.
