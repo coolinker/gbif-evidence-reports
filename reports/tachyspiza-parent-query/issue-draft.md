@@ -4,12 +4,17 @@
 
 An occurrence search for `Accipitriformes` in the GBIF iNaturalist dataset
 returns 36,493 Australian records for 2020-2025. A separate query for
-`Tachyspiza` returns another 4,144 records from the same dataset, country, and
-years.
+`Tachyspiza` returns 4,144 records from the same dataset, country, and years.
+The two result sets contain no duplicate GBIF occurrence keys.
 
-The `Tachyspiza` records are published and individually accessible, but their
-GBIF interpretation has no `order` value. They are therefore absent from the
-`Accipitriformes` parent-taxon result.
+The source observations identify `Tachyspiza` species within
+`Accipitriformes`. In GBIF, the affected occurrences are interpreted only as
+the doubtful genus `Tachyspiza` (taxon key `4852732`), have no `order` value,
+and carry `TAXON_ID_NOT_FOUND`. They are published and individually
+accessible, but are absent from the `Accipitriformes` parent-taxon result.
+
+This report concerns occurrence-query behaviour and hierarchy placement. It
+does not ask GBIF to choose between competing taxonomies.
 
 ## Reproduction
 
@@ -33,8 +38,6 @@ Observed on 2026-08-03:
 4,144 records
 ```
 
-The two result sets contain no duplicate GBIF occurrence keys.
-
 ## Minimal examples
 
 - https://www.gbif.org/occurrence/6441464971
@@ -51,18 +54,20 @@ Each example:
 
 ## Expected and observed behaviour
 
-**Expected:** There is a documented API method to retrieve the complete source
-group or to detect source taxa detached from their expected parent hierarchy.
+**Expected:** A user querying a parent taxon can either retrieve these
+published source-group records or use a documented API signal or method to
+discover taxa detached from that parent hierarchy.
 
-**Observed:** The normal parent-taxon query silently excludes these published
-records. Adding the separate genus query recovered 4,142 of 4,149 aligned
-iNaturalist observations that appeared absent from Query A.
+**Observed:** Query A neither returns nor indicates the existence of the 4,144
+Query B records. Adding the separate genus query recovered 4,142 of 4,149
+aligned iNaturalist observations that appeared absent from Query A.
 
 ## Question
 
-Is this exclusion intended behaviour? If so, what API method should users use
-to discover and retrieve records assigned to taxa that are detached from their
-expected parent hierarchy?
+Is this the intended semantic behaviour of `taxon_key` parent filtering? If
+so, is there an existing API method or recommended reproducible strategy for
+discovering and retrieving records assigned to taxa that are detached from
+their expected parent hierarchy?
 
 Detailed evidence and a standard-library reproduction script:
 
