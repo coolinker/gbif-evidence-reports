@@ -13,11 +13,14 @@ not claim that either taxonomy is biologically correct.
 
 - First audit: 2026-07-31 to 2026-08-01
 - Live query rechecked: 2026-08-03
-- External GBIF issue: not yet submitted
+- Submitted to GBIF: 2026-08-03
+- External issue:
+  [`gbif/portal-feedback#6779`](https://github.com/gbif/portal-feedback/issues/6779)
+- Issue status at submission: open, no labels or comments
 
 ## Contents
 
-- [`issue-draft.md`](issue-draft.md): concise draft for `gbif/portal-feedback`
+- [`issue-draft.md`](issue-draft.md): submitted issue body
 - [`evidence.md`](evidence.md): methods, aggregate measurements, and limitations
 - [`example-records.csv`](example-records.csv): three public record examples
 - [`../../scripts/check_tachyspiza_query.py`](../../scripts/check_tachyspiza_query.py):

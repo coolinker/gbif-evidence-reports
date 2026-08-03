@@ -13,7 +13,7 @@ small reproduction tools publicly accessible.
 
 | Report | Status |
 |---|---|
-| [`Tachyspiza` records omitted from an `Accipitriformes` parent query](reports/tachyspiza-parent-query/) | Draft for submission |
+| [`Tachyspiza` records omitted from an `Accipitriformes` parent query](reports/tachyspiza-parent-query/) | [GBIF issue #6779](https://github.com/gbif/portal-feedback/issues/6779) — open |
 
 ## Reproduce the current GBIF result
 
