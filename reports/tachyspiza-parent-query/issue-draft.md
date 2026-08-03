@@ -36,11 +36,6 @@ https://api.gbif.org/v1/occurrence/search?occurrence_id=https%3A%2F%2Fwww.inatur
 {"count": 0}
 ```
 
-GBIF interprets the occurrence as doubtful genus `Tachyspiza`, with no
-`order`, and reports `TAXON_ID_NOT_FOUND`:
-
-https://api.gbif.org/v1/occurrence/6441464971
-
 ## Scope
 
 Using the same dataset, country, and year filters:
