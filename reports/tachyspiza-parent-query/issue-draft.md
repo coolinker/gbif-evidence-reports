@@ -36,6 +36,17 @@ https://api.gbif.org/v1/occurrence/search?occurrence_id=https%3A%2F%2Fwww.inatur
 {"count": 0}
 ```
 
+## Control
+
+For GBIF occurrence
+[`5006702322`](https://www.gbif.org/occurrence/5006702322), interpreted as
+`Aquila audax audax`, the equivalent filters work as expected:
+
+- [`Aquila` genus key `2480498`](https://api.gbif.org/v1/occurrence/search?occurrence_id=https%3A%2F%2Fwww.inaturalist.org%2Fobservations%2F257351571&taxon_key=2480498&dataset_key=50c9509d-22c7-4a22-a47d-8c48425ef4a7&limit=1):
+  `count: 1`
+- [`Accipitriformes` order key `7191147`](https://api.gbif.org/v1/occurrence/search?occurrence_id=https%3A%2F%2Fwww.inaturalist.org%2Fobservations%2F257351571&taxon_key=7191147&dataset_key=50c9509d-22c7-4a22-a47d-8c48425ef4a7&limit=1):
+  `count: 1`
+
 ## Scope
 
 Using the same dataset, country, and year filters:
